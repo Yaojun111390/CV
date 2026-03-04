@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鍾曜駿 Alan | 數位履歷</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #05080a;
+            --card-bg: rgba(20, 30, 45, 0.8);
+            --accent-color: #00f2ff;
+            --text-main: #e0e0e0;
+            --text-dim: #b0b0b0;
+            --neon-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Noto Sans TC', sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #102030 0%, #05080a 100%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0 40px 0;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+        }
+
+        .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            box-shadow: var(--neon-shadow);
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .name-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin: 0;
+            color: var(--accent-color);
+            text-shadow: var(--neon-shadow);
+            letter-spacing: 4px;
+        }
+
+        .sub-tagline {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-top: 10px;
+        }
+
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 40px 0;
+        }
+
+        .highlight-box {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-color);
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        section { margin-bottom: 60px; }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 15px;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .info-item b { color: var(--accent-color); margin-right: 10px; }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .cert-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .cert-item {
+            background: var(--card-bg);
+            padding: 10px 20px;
+            border-radius: 5px;
+            border-left: 3px solid #fff;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            border-left: 2px solid rgba(0, 242, 255, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -8px; top: 0;
+            width: 14px; height: 14px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: var(--neon-shadow);
+        }
+
+        .job-title { font-size: 1.3rem; color: var(--accent-color); font-weight: bold; }
+        .job-date { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 5px; }
+
+        /* 作品展示與點擊效果 */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 4/3;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer; /* 顯示可點擊的手勢 */
+        }
+
+        .portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .portfolio-item:hover img { transform: scale(1.1); filter: brightness(1.2); }
+        
+        .caption {
+            position: absolute; bottom: 0; width: 100%;
+            background: rgba(0,0,0,0.8); color: var(--accent-color);
+            padding: 8px; font-size: 0.8rem; text-align: center;
+            pointer-events: none;
+        }
+
+        /* --- 放大鏡燈箱 Lightbox CSS --- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .lightbox.active { display: flex; }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85%;
+            border: 2px solid var(--accent-color);
+            box-shadow: var(--neon-shadow);
+            border-radius: 5px;
+            animation: zoomIn 0.3s;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px; right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .info-grid, .cert-list { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-overlay"></div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img">
+</div>
+
+<header class="animate__animated animate__fadeIn">
+    <img src="profile.jpg" alt="鍾曜駿" class="profile-pic" onerror="this.src='https://via.placeholder.com/180/16212e/00f2ff?text=Alan+Chung'">
+    <h1 class="name-title">鍾曜駿 Alan</h1>
+    <p class="sub-tagline">Project Manager | 跨域專案經理</p>
+    
+    <div class="container">
+        <div class="highlights">
+            <div class="highlight-box">年輕但具專案經理經驗</div>
+            <div class="highlight-box">科技 + 大型活動 + 政府經驗</div>
+            <div class="highlight-box">餐酒館創業背景</div>
+            <div class="highlight-box">產學合作豐富資歷</div>
+            <div class="highlight-box">反應敏銳</div>
+            <div class="highlight-box">冷靜分析</div>
+            <div class="highlight-box">細心、負責任</div>
+            <div class="highlight-box">善於溝通</div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <section class="animate__animated animate__fadeInUp">
+        <h2>Personal Info 個人資料</h2>
+        <div class="info-grid">
+            <div class="info-item"><b>生日:</b> 90/11/13</div>
+            <div class="info-item"><b>電話:</b> 0988-354-733</div>
+            <div class="info-item"><b>Email:</b> qw1237892323@gmail.com</div>
+            <div class="info-item"><b>學歷:</b> 國立虎尾科技大學 資訊管理系</div>
+        </div>
+    </section>
+
+    <section class="animate__animated animate__fadeInUp">
+        <h2>Skills 技能專長</h2>
+        <div class="skills-container">
+            <span class="skill-tag">社群經營</span><span class="skill-tag">顧客經營</span><span class="skill-tag">活動辦理</span>
+            <span class="skill-tag">跨部門溝通</span><span class="skill-tag">活動規劃與執行</span><span class="skill-tag">經費管控核銷</span>
+            <span class="skill-tag">短影音企劃</span><span class="skill-tag">網頁管理</span><span class="skill-tag">資料收集</span>
+            <span class="skill-tag">競品分析</span><span class="skill-tag">市場趨勢分析</span><span class="skill-tag">專案規劃監督</span><span class="skill-tag">B2B合作</span>
+        </div>
+    </section>
+
+    <section class="animate__animated animate__fadeInUp">
+        <h2>Experience 工作經驗</h2>
+        <div class="timeline-item">
+            <div class="job-title">茗曜農業生技有限公司 - 專案經理</div>
+            <div class="job-date">113年7月 – 114年12月</div>
+            <p>專案規劃監督、B2B商務合作、市場分析、解決問題。</p>
+            <p>利用Figma製圖開會效率提升，降低不必要的溝通成本，提升品質且確保完成專案</p>
+        </div>
+        <div class="timeline-item">
+            <div class="job-title">國立虎尾科技大學電算中心 - 專案助理</div>
+            <div class="job-date">111年3月 – 113年6月</div>
+            <p>校內業務執行、中心網頁管理、電腦教室維護、資材與軟體授權管理。</p>
+            <p>校內資訊安全稽核協助、公文系統收發、校務行政系統運用、校園APP開發團隊、校園Gmail管理。</p>
+        </div>
+        <div class="timeline-item">
+            <div class="job-title">民雄農工 - 社團教師</div>
+            <div class="job-date">112年3月 – 113年6月</div>
+            <p>電競產業認知授課與證照內容介紹。</p>
+        </div>
+        <div class="timeline-item">
+            <div class="job-title">嘉義市政府體育會 - 秘書</div>
+            <div class="job-date">111年6月 – 112年5月</div>
+            <p>大型籌備活動(百人至千人)、政府經費申請計畫撰寫、企劃案執行與結案。</p>
+            <p>合作廠商溝通、經費計畫核銷、反饋數據收集分析、社群經營管理。</p>
+        </div>
+        <div class="timeline-item">
+            <div class="job-title">翰興農產有限公司 - 倉管、物流人員</div>
+            <div class="job-date">108年4月 – 110年12月</div>
+            <p>原物料控管、ISO22000與HACCP稽核單位人員、月報表整理。</p>
+        </div>
+    </section>
+
+    <section class="animate__animated animate__fadeInUp">
+        <h2>Certifications 專業證照</h2>
+        <div class="cert-list">
+            <div class="cert-item">1. 電腦軟體應用 乙級</div>
+            <div class="cert-item">2. 網頁設計 丙級</div>
+            <div class="cert-item">3. BAP-MASTER</div>
+            <div class="cert-item">4. 門市服務 丙級</div>
+            <div class="cert-item">5. TQC-Word, Power point, Excel</div>
+            <div class="cert-item">6. 電子競技運動 丙級裁判證</div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="animate__animated animate__fadeInUp">Portfolio 作品展示 (點擊圖片放大)</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="AIT ASUS參訪.png"><div class="caption">AIT ASUS 參訪</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="CTESA AIT.png"><div class="caption">CTESA AIT 交流</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="OPPO電競講座.png"><div class="caption">OPPO 電競講座</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="ACER電競講座.png"><div class="caption">ACER 電競講座</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="PM課程.png"><div class="caption">PM 專業課程</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="ROG線下活動.png"><div class="caption">ROG 線下活動</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="XPG產學合作.png"><div class="caption">XPG 產學合作案</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="XPG產學合作-官方行銷活動.png"><div class="caption">XPG產學合作-官方行銷活動</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="XPG產學合作-校園大使.png"><div class="caption">XPG產學合作-校園大使</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="XPG產學合作-活動舉辦.png"><div class="caption">XPG產學合作-活動舉辦</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="XPG產學合作-結案報告.png"><div class="caption">XPG產學合作-結案報告</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="XPG產學合作-線下展場.png"><div class="caption">XPG產學合作-線下展場</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="XPG產學合作-線下展場介紹.png"><div class="caption">XPG產學合作-線下展場介紹</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="XPG產學合作-績效累積報告.png"><div class="caption">XPG產學合作-績效累積報告</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="水冷研習.png"><div class="caption">開放式硬體水冷研習</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="短影音流量.png"><div class="caption">短影音流量數據</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="資安.png"><div class="caption">資安研習證書</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="電競賽得獎.png"><div class="caption">全國電競賽得獎</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="嘉義市全國電競賽.png"><div class="caption">嘉義市全國電競賽</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="嘉義市萬聖節活動.png"><div class="caption">嘉義市萬聖節活動</div></div>
+            <div class="portfolio-item animate__animated animate__zoomIn"><img src="證照.png"><div class="caption">證照檔案</div></div>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p style="text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.8rem;">
+        &copy; 2026 Alan Chung.
+    </p>
+</footer>
+
+<script>
+    // 燈箱控制邏輯
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    // 幫所有作品圖片加上點擊事件
+    document.querySelectorAll('.portfolio-item img').forEach(image => {
+        image.parentElement.onclick = () => {
+            lightbox.classList.add('active');
+            lightboxImg.src = image.src;
+        };
+    });
+
+    // 關閉燈箱
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+    }
+
+    // 按下 ESC 也可以關閉
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+    });
+</script>
+
+</body>
+</html>
